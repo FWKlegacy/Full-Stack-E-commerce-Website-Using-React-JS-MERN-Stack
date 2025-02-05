@@ -1,4 +1,5 @@
 import { assets } from '../assets/assets';
+import NewsLetterBox from '../components/NewsLetterBox';
 import Title from '../components/Title';
 const About = () => {
 	return (
@@ -32,6 +33,7 @@ const About = () => {
 					<p className='text-gray-600'>ToWe strive to be a global leader in fashion-knit and fashion outerwear by empowering innovation and design to provide total customer satisfaction.</p>
 				</div>
 			</div>
+			<NewsLetterBox />
 		</div>
 	);
 };
