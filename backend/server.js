@@ -4,6 +4,7 @@ import 'dotenv/config';
 import connectDB from './config/mongoDb.js';
 import connectCloudinary from './config/cloudinary.js';
 import userRouter from './routes/userRoute.js';
+import productsRouter from './routes/productsRoute.js';
 
 //App config
 const app = express();
@@ -18,8 +19,6 @@ app.use(cors());
 //App endpoint
 
 app.use('/api/user', userRouter);
-app.get('/', (req, res) => {
-	res.send('Api Working just fine guys');
-});
+app.use('/api/product', productsRouter);
 
 app.listen(port, () => console.log(`server running on port ${port}`));
