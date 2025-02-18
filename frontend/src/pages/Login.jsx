@@ -1,14 +1,47 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { ShopContext } from '../context/ShopContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Login = () => {
-	const [currState, setCurrState] = useState('Sign Up');
+	const [currState, setCurrState] = useState('Login');
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
 
 	const onSubmitHandler = async e => {
 		e.preventDefault();
+		try {
+			if (currState === 'Sign Up') {
+				const response = await axios.post(backendUrl + '/api/user/register', { name, email, password });
+
+				if (response.data.success) {
+					setToken(response.data.token);
+					localStorage.setItem('token', response.data.token);
+				} else {
+					toast.error(response.data.message);
+				}
+			} else {
+				const response = await axios.post(backendUrl + '/api/user/login', { email, password });
+				if (response.data.success) {
+					setToken(response.data.token);
+					localStorage.setItem('token', response.data.token);
+				} else {
+					toast.error(response.data.message);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error(error.message);
+		}
 	};
+
+	useEffect(() => {
+		if (token) {
+			navigate('/');
+		}
+	}, [token]);
 	return (
 		<form className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800' onSubmit={onSubmitHandler}>
 			<div className='inline-flex items-center gap-2 mb-2 mt-10'>
